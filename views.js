@@ -1,7 +1,7 @@
 /**
  * SmartBroker – Views Layer
  * Funciones puras que reciben datos y retornan HTML como string.
- * No tocan el DOM directamente; sólo generan markup.
+ * No tocan el DOM directamente; sólo generan markup como debe ser.
  */
 
 export const Views = {
