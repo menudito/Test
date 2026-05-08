@@ -337,11 +337,11 @@ export const Controllers = {
     const hint       = document.getElementById("spiderHint");
     if (!scene || !centerBtn || !nodesWrap || !svg) return;
 
-    const SCENE_W  = 520;
-    const CX       = SCENE_W / 2;   // 260
-    const CY       = SCENE_W / 2;   // 260
-    const R1       = 130;            // orbit 1 radius (main nodes)
-    const R2       = 240;            // orbit 2 radius (child nodes)
+    const SCENE_W  = 640;
+    const CX       = SCENE_W / 2;   // 320
+    const CY       = SCENE_W / 2;   // 320
+    const R1       = 148;            // orbit 1 radius (main nodes)
+    const R2       = 298;            // orbit 2 radius (child nodes — ampliado para 9 hijos)
     const DEG      = Math.PI / 180;
 
     let menuOpen  = false;
@@ -388,9 +388,11 @@ export const Controllers = {
       node.innerHTML  = `<span class="sn-icon">${svc.icon}</span><span class="sn-label">${svc.label.replace("\n", "<br>")}</span>`;
       nodesWrap.appendChild(node);
 
-      /* Child nodes */
+      /* Child nodes — spread dinámico según cantidad de hijos */
+      const _step   = Math.min(20, 140 / Math.max(svc.children.length - 1, 1));
+      const _offset = _step * (svc.children.length - 1) / 2;
       svc.children.forEach((child, j) => {
-        const spread = svc.angle - 20 + j * 20;
+        const spread = svc.angle - _offset + j * _step;
         const cp     = radPos(spread, R2);
         const childEl = document.createElement("a");
         childEl.className = "spider-child";
@@ -442,8 +444,10 @@ export const Controllers = {
       activeId = svc.id;
       document.getElementById("sn-" + svc.id)?.classList.add("is-active");
       hint.textContent = svc.label.replace("\n", " ") + " — elige una opción";
+      const oStep   = Math.min(20, 140 / Math.max(svc.children.length - 1, 1));
+      const oOffset = oStep * (svc.children.length - 1) / 2;
       svc.children.forEach((child, j) => {
-        const spread  = svc.angle - 20 + j * 20;
+        const spread  = svc.angle - oOffset + j * oStep;
         const cp      = radPos(spread, R2);
         const childEl = document.getElementById(`sc-${svc.id}-${j}`);
         setTimeout(() => {

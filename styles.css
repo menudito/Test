@@ -1806,8 +1806,8 @@ input.is-valid,   textarea.is-valid   { border-color: var(--success); }
 /* Outer scene container — fixed square so radial maths work */
 .spider-scene {
   position: relative;
-  width: 520px;
-  height: 520px;
+  width: 640px;
+  height: 640px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1821,8 +1821,8 @@ input.is-valid,   textarea.is-valid   { border-color: var(--success); }
   border: 1px solid rgba(232, 87, 26, 0.18);
   pointer-events: none;
 }
-.spider-orbit-ring--1 { width: 310px; height: 310px; }
-.spider-orbit-ring--2 { width: 510px; height: 510px; }
+.spider-orbit-ring--1 { width: 380px; height: 380px; }
+.spider-orbit-ring--2 { width: 630px; height: 630px; }
 
 /* SVG connector lines */
 .spider-svg {
@@ -2001,13 +2001,13 @@ input.is-valid,   textarea.is-valid   { border-color: var(--success); }
 /* ── RESPONSIVE ── */
 @media (max-width: 580px) {
   .spider-scene {
-    width: 340px;
-    height: 340px;
-    transform: scale(0.78);
+    width: 380px;
+    height: 380px;
+    transform: scale(0.72);
     transform-origin: center top;
   }
-  .spider-orbit-ring--1 { width: 210px; height: 210px; }
-  .spider-orbit-ring--2 { width: 340px; height: 340px; }
+  .spider-orbit-ring--1 { width: 240px; height: 240px; }
+  .spider-orbit-ring--2 { width: 380px; height: 380px; }
   .spider-menu-wrap { gap: 0; }
 }
 
