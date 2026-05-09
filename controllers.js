@@ -337,11 +337,11 @@ export const Controllers = {
     const hint       = document.getElementById("spiderHint");
     if (!scene || !centerBtn || !nodesWrap || !svg) return;
 
-    const SCENE_W  = 640;
-    const CX       = SCENE_W / 2;   // 320
-    const CY       = SCENE_W / 2;   // 320
-    const R1       = 148;            // orbit 1 radius (main nodes)
-    const R2       = 298;            // orbit 2 radius (child nodes — ampliado para 9 hijos)
+    const SCENE_W  = 600;
+    const CX       = SCENE_W / 2;   // 300
+    const CY       = SCENE_W / 2;   // 300
+    const R1       = 160;            // orbit 1 radius (3 main nodes)
+    const R2       = 300;            // orbit 2 radius (child nodes — up to 10, expanded for spacing)
     const DEG      = Math.PI / 180;
 
     let menuOpen  = false;
@@ -388,19 +388,20 @@ export const Controllers = {
       node.innerHTML  = `<span class="sn-icon">${svc.icon}</span><span class="sn-label">${svc.label.replace("\n", "<br>")}</span>`;
       nodesWrap.appendChild(node);
 
-      /* Child nodes — spread dinámico según cantidad de hijos */
-      const _step   = Math.min(20, 140 / Math.max(svc.children.length - 1, 1));
-      const _offset = _step * (svc.children.length - 1) / 2;
+      /* Child nodes — spread dynamically based on count and per-branch step */
+      const CHILD_STEP = svc.childStep || 9;                  // degrees between children (per branch)
+      const totalArc   = (svc.children.length - 1) * CHILD_STEP;
+      const startAngle = svc.angle - totalArc / 2;
       svc.children.forEach((child, j) => {
-        const spread = svc.angle - _offset + j * _step;
+        const spread = startAngle + j * CHILD_STEP;
         const cp     = radPos(spread, R2);
         const childEl = document.createElement("a");
         childEl.className = "spider-child";
         childEl.id        = `sc-${svc.id}-${j}`;
         childEl.href      = child.href || "#contacto";
         childEl.setAttribute("aria-label", child.label.replace("\n", " "));
-        childEl.style.left = (cp.x - 24) + "px";
-        childEl.style.top  = (cp.y - 24) + "px";
+        childEl.style.left = (cp.x - 25) + "px";
+        childEl.style.top  = (cp.y - 25) + "px";
         childEl.innerHTML  = `<span class="sc-icon">${child.icon}</span><span class="sc-label">${child.label.replace("\n", "<br>")}</span>`;
         nodesWrap.appendChild(childEl);
       });
@@ -444,10 +445,11 @@ export const Controllers = {
       activeId = svc.id;
       document.getElementById("sn-" + svc.id)?.classList.add("is-active");
       hint.textContent = svc.label.replace("\n", " ") + " — elige una opción";
-      const oStep   = Math.min(20, 140 / Math.max(svc.children.length - 1, 1));
-      const oOffset = oStep * (svc.children.length - 1) / 2;
+      const childStep2   = svc.childStep || 9;
+      const totalArc2    = (svc.children.length - 1) * childStep2;
+      const startAngle2  = svc.angle - totalArc2 / 2;
       svc.children.forEach((child, j) => {
-        const spread  = svc.angle - oOffset + j * oStep;
+        const spread  = startAngle2 + j * childStep2;
         const cp      = radPos(spread, R2);
         const childEl = document.getElementById(`sc-${svc.id}-${j}`);
         setTimeout(() => {
