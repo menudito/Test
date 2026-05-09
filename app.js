@@ -13,7 +13,7 @@ const App = {
    * Bootstrap: renderiza la UI y arranca los controllers.
    */
   init() {
-    const { brand, nav, hero, services, about, testimonials, contact, sitemap, spiderMenu } = AppModel;
+    const { brand, nav, hero, services, about, contact, sitemap, spiderMenu } = AppModel;
 
     // ── Inyección de CSS variables de marca ──
     this._applyBrandColors(brand.colors);
@@ -28,7 +28,7 @@ const App = {
         Views.renderHero(hero),
         Views.renderServices(services),
         Views.renderAbout(about),
-        Views.renderTestimonials(testimonials),
+        Views.renderAseguradoras(),
         Views.renderContact(contact),
         Views.renderSitemap(brand, sitemap),
       '</main>',

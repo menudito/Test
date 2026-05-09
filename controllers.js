@@ -112,49 +112,8 @@ export const Controllers = {
      TESTIMONIALS CAROUSEL CONTROLLER
   ═══════════════════════════════════════ */
   initTestimonials() {
-    const track  = document.getElementById("testimonials-track");
-    const dots   = document.querySelectorAll(".tc-dot");
-    const prevBtn = document.getElementById("tc-prev");
-    const nextBtn = document.getElementById("tc-next");
-
-    if (!track) return;
-
-    let current = 0;
-    const total = dots.length;
-    let autoplay;
-    let startX = 0;
-
-    const goTo = (index) => {
-      current = (index + total) % total;
-      track.style.transform = `translateX(-${current * 100}%)`;
-      dots.forEach((d, i) => {
-        d.classList.toggle("active", i === current);
-        d.setAttribute("aria-selected", String(i === current));
-      });
-    };
-
-    /* Buttons */
-    prevBtn?.addEventListener("click", () => { goTo(current - 1); resetAuto(); });
-    nextBtn?.addEventListener("click", () => { goTo(current + 1); resetAuto(); });
-
-    /* Dot navigation */
-    dots.forEach((dot, i) => {
-      dot.addEventListener("click", () => { goTo(i); resetAuto(); });
-    });
-
-    /* Touch / swipe */
-    track.addEventListener("touchstart", e => { startX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener("touchend", e => {
-      const diff = startX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) { goTo(current + (diff > 0 ? 1 : -1)); resetAuto(); }
-    });
-
-    /* Autoplay */
-    const startAuto = () => { autoplay = setInterval(() => goTo(current + 1), 5000); };
-    const resetAuto = () => { clearInterval(autoplay); startAuto(); };
-
-    startAuto();
-    goTo(0);
+    /* El carrusel de aseguradoras es 100% CSS (animation marquee).
+       No requiere lógica JS — este método se mantiene para compatibilidad. */
   },
 
   /* ═══════════════════════════════════════

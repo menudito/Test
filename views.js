@@ -194,56 +194,44 @@ export const Views = {
   },
 
   /* ─── TESTIMONIALS ─── */
-  renderTestimonials(testimonials) {
-    const stars = (n) => Array.from({length: n}, () =>
-      `<svg viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><path d="M7 1l1.6 4H13l-3.5 2.5 1.3 4.3L7 9.5l-3.8 2.3 1.3-4.3L1 5h4.4z"/></svg>`
-    ).join("");
+  renderAseguradoras() {
+    /* 22 logos placeholder — reemplazar src por logos reales cuando estén disponibles */
+    const logos = Array.from({ length: 22 }, (_, i) => ({
+      src: `assets/aseguradoras/aseg_${String(i + 1).padStart(2, "0")}.svg`,
+      alt: `Aseguradora aliada ${i + 1}`,
+    }));
+
+    /* Duplicamos el array para el loop infinito CSS */
+    const allLogos = [...logos, ...logos];
 
     return `
-    <section class="testimonials section" id="testimonios" aria-labelledby="testimonials-heading">
+    <section class="aseguradoras section" id="aseguradoras" aria-labelledby="aseg-heading">
       <div class="container">
         <div class="section-header reveal">
-          <span class="eyebrow">Testimonios</span>
-          <h2 id="testimonials-heading">Lo que dicen<br>nuestros clientes</h2>
+          <span class="eyebrow">Alianzas estratégicas</span>
+          <h2 id="aseg-heading">Nuestras Aseguradoras<br>Aliadas</h2>
+          <p class="section-desc">Trabajamos con las principales aseguradoras del mercado para ofrecerte la mejor cobertura al mejor precio.</p>
         </div>
+      </div>
 
-        <div class="testimonials__track-wrap" role="region" aria-label="Carrusel de testimonios">
-          <div class="testimonials__track" id="testimonials-track">
-            ${testimonials.map(t => `
-              <article class="testimonial-card" aria-label="Testimonio de ${t.name}">
-                <div class="testimonial-card__stars" aria-label="${t.rating} de 5 estrellas">
-                  ${stars(t.rating)}
-                </div>
-                <blockquote>"${t.text}"</blockquote>
-                <div class="testimonial-card__author">
-                  <div class="author-avatar" aria-hidden="true">${t.avatar}</div>
-                  <div>
-                    <strong>${t.name}</strong>
-                    <span>${t.role}</span>
-                  </div>
-                </div>
-              </article>
-            `).join("")}
-          </div>
+      <!-- Carrusel infinito — sin container para que llegue a los bordes -->
+      <div class="aseg-marquee" aria-label="Carrusel de aseguradoras aliadas" role="region">
+        <div class="aseg-track" id="asegTrack">
+          ${allLogos.map((logo, i) => `
+            <div class="aseg-item" aria-hidden="${i >= 22}">
+              <img src="${logo.src}" alt="${logo.alt}" loading="lazy" width="120" height="72" />
+            </div>
+          `).join("")}
         </div>
+      </div>
 
-        <!-- Controls -->
-        <div class="testimonials__controls" aria-label="Controles del carrusel">
-          <button class="tc-btn" id="tc-prev" aria-label="Testimonio anterior">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-          <div class="tc-dots" id="tc-dots" role="tablist" aria-label="Seleccionar testimonio">
-            ${testimonials.map((_, i) => `
-              <button class="tc-dot ${i === 0 ? 'active' : ''}" 
-                role="tab" 
-                aria-selected="${i === 0}" 
-                aria-label="Testimonio ${i + 1}"
-                data-index="${i}"></button>
-            `).join("")}
-          </div>
-          <button class="tc-btn" id="tc-next" aria-label="Testimonio siguiente">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M8 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
+      <div class="aseg-marquee aseg-marquee--reverse" aria-hidden="true">
+        <div class="aseg-track aseg-track--reverse">
+          ${allLogos.map(logo => `
+            <div class="aseg-item">
+              <img src="${logo.src}" alt="" loading="lazy" width="120" height="72" />
+            </div>
+          `).join("")}
         </div>
       </div>
     </section>`;
