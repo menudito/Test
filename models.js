@@ -67,11 +67,11 @@ const AppModel = {
       angle: -90,
       childStep: 14,
       children: [
-        { label: "Vehículos",              icon: "🚗", href: "#contacto" },
-        { label: "Hogar",                  icon: "🏠", href: "#contacto" },
-        { label: "Vida y\nAs. Médica",     icon: "❤️", href: "#contacto" },
-        { label: "Seguro\nde Viaje",       icon: "✈️", href: "#contacto" },
-        { label: "Vida y\nAhorro",         icon: "💰", href: "#contacto" },
+        { label: "Vehículos",              icon: "🚗", serviceId: "personas-vehiculos" },
+        { label: "Hogar",                  icon: "🏠", serviceId: "personas-hogar" },
+        { label: "Vida y\nAs. Médica",     icon: "❤️", serviceId: "personas-vida-medica" },
+        { label: "Seguro\nde Viaje",       icon: "✈️", serviceId: "personas-viaje" },
+        { label: "Vida y\nAhorro",         icon: "💰", serviceId: "personas-vida-ahorro" },
       ],
     },
     {
@@ -81,13 +81,13 @@ const AppModel = {
       angle: 30,
       childStep: 10,
       children: [
-        { label: "Multi-\nrriesgo",        icon: "🔐", href: "#contacto" },
-        { label: "Programas\nSeguros",     icon: "📋", href: "#contacto" },
-        { label: "Transporte",             icon: "🚢", href: "#contacto" },
-        { label: "Resp.\nCivil",           icon: "⚖️", href: "#contacto" },
-        { label: "Accidentes\nPersonales", icon: "⛑️", href: "#contacto" },
-        { label: "Casco\nAéreo/Mar.",      icon: "⚓", href: "#contacto" },
-        { label: "Asistencia\nMédica",     icon: "🏥", href: "#contacto" },
+        { label: "Multi-\nrriesgo",        icon: "🔐", serviceId: "empresas-multirriesgo" },
+        { label: "Programas\nSeguros",     icon: "📋", serviceId: "empresas-programas" },
+        { label: "Transporte",             icon: "🚢", serviceId: "empresas-transporte" },
+        { label: "Resp.\nCivil",           icon: "⚖️", serviceId: "empresas-rc" },
+        { label: "Accidentes\nPersonales", icon: "⛑️", serviceId: "empresas-accidentes" },
+        { label: "Casco\nAéreo/Mar.",      icon: "⚓", serviceId: "empresas-casco" },
+        { label: "Asistencia\nMédica",     icon: "🏥", serviceId: "empresas-medica" },
       ],
     },
     {
@@ -97,19 +97,157 @@ const AppModel = {
       angle: 150,
       childStep: 10,
       children: [
-        { label: "BUA",   icon: "📄", href: "#contacto" },
-        { label: "CC",    icon: "📄", href: "#contacto" },
-        { label: "EOBCM", icon: "📄", href: "#contacto" },
-        { label: "SO",    icon: "📄", href: "#contacto" },
-        { label: "PGB",   icon: "📄", href: "#contacto" },
-        { label: "FL",    icon: "📄", href: "#contacto" },
-        { label: "GA",    icon: "📄", href: "#contacto" },
-        { label: "GJ",    icon: "📄", href: "#contacto" },
-        { label: "GAR",   icon: "📄", href: "#contacto" },
-        { label: "GA",    icon: "📄", href: "#contacto" },
+        { label: "BUA",   icon: "📄", serviceId: "fianzas-bua"   },
+        { label: "CC",    icon: "📄", serviceId: "fianzas-cc"    },
+        { label: "EOBCM", icon: "📄", serviceId: "fianzas-eobcm" },
+        { label: "SO",    icon: "📄", serviceId: "fianzas-so"    },
+        { label: "PGB",   icon: "📄", serviceId: "fianzas-pgb"   },
+        { label: "FL",    icon: "📄", serviceId: "fianzas-fl"    },
+        { label: "GA",    icon: "📄", serviceId: "fianzas-ga"    },
+        { label: "GJ",    icon: "📄", serviceId: "fianzas-gj"    },
+        { label: "GAR",   icon: "📄", serviceId: "fianzas-gar"   },
+        { label: "GA",    icon: "📄", serviceId: "fianzas-ga"    },
       ],
     },
   ],
+
+  /* ───────── WHATSAPP ───────── */
+  whatsapp: "593998661249",   /* número sin + ni espacios */
+
+  /* ───────── SERVICE DETAILS (22 servicios del menú) ───────── */
+  serviceDetails: {
+    /* ── PERSONAS ── */
+    "personas-vehiculos": {
+      branch: "Personas",
+      title: "Seguro de Vehículos",
+      desc: "Protege tu auto, moto o camioneta ante accidentes, robo, daños a terceros y eventos de la naturaleza. Contamos con planes desde cobertura básica de responsabilidad civil hasta todo riesgo con asistencia 24/7 en carretera, vehículo de reemplazo y defensa legal.",
+      features: ["Pérdida total y pérdida parcial", "Responsabilidad civil obligatoria y ampliada", "Asistencia en carretera 24/7", "Vehículo de reemplazo", "Daños por fenómenos naturales", "Defensa legal y penal"],
+    },
+    "personas-hogar": {
+      branch: "Personas",
+      title: "Seguro de Hogar",
+      desc: "Tu vivienda y todo lo que hay dentro protegidos frente a incendio, robo, inundaciones y daños eléctricos. Cubrimos tanto el inmueble como el contenido, con asistencia del hogar para plomería, electricidad y cerrajería sin costo adicional.",
+      features: ["Incendio y explosión", "Robo y hurto de contenidos", "Daños por agua e inundación", "Daños eléctricos y cortocircuito", "Responsabilidad civil familiar", "Asistencia hogar 24/7"],
+    },
+    "personas-vida-medica": {
+      branch: "Personas",
+      title: "Vida y Asistencia Médica",
+      desc: "Un plan que combina la tranquilidad del seguro de vida con acceso a atención médica de calidad. En caso de fallecimiento o invalidez, garantizas el bienestar de tu familia; con la cobertura médica, tienes acceso a consultas, hospitalización y medicamentos.",
+      features: ["Cobertura por fallecimiento", "Invalidez total y parcial", "Enfermedades graves (cáncer, ACV, infarto)", "Hospitalización y cirugías", "Consultas médicas ambulatorias", "Medicamentos recetados"],
+    },
+    "personas-viaje": {
+      branch: "Personas",
+      title: "Seguro de Viaje",
+      desc: "Viaja tranquilo a cualquier destino del mundo. Cubrimos emergencias médicas en el exterior, cancelaciones de vuelo, pérdida de equipaje y repatriación sanitaria. Disponible para viajes individuales, familiares y anuales para viajeros frecuentes.",
+      features: ["Emergencias médicas en el exterior", "Evacuación y repatriación sanitaria", "Cancelación y demora de vuelos", "Pérdida y daño de equipaje", "Responsabilidad civil en viaje", "Asistencia legal en el extranjero"],
+    },
+    "personas-vida-ahorro": {
+      branch: "Personas",
+      title: "Vida y Ahorro",
+      desc: "Un producto que te protege y al mismo tiempo hace crecer tu patrimonio. Combinas un seguro de vida con un componente de ahorro o inversión que genera rendimientos, garantizándote una suma asegurada al final del plazo o en caso de fallecimiento anticipado.",
+      features: ["Seguro de vida base incluido", "Componente de ahorro con rendimiento garantizado", "Flexibilidad de aportaciones", "Préstamo sobre valor de rescate", "Beneficios fiscales aplicables", "Capital garantizado al vencimiento"],
+    },
+
+    /* ── EMPRESAS ── */
+    "empresas-multirriesgo": {
+      branch: "Empresas",
+      title: "Seguro Multirriesgo Empresarial",
+      desc: "Cobertura todo en uno para tu negocio: instalaciones, equipos, mercancías, responsabilidad civil y pérdida de beneficios en una sola póliza. Ideal para comercios, oficinas, bodegas e industrias que buscan protección integral con un único interlocutor.",
+      features: ["Incendio, explosión y riesgos aliados", "Robo con fuerza en las cosas", "Daños por agua e inundación", "Pérdida de beneficios / lucro cesante", "Responsabilidad civil de explotación", "Equipo electrónico y maquinaria"],
+    },
+    "empresas-programas": {
+      branch: "Empresas",
+      title: "Programas de Seguros",
+      desc: "Diseñamos programas de seguros corporativos a la medida de tu empresa: análisis de riesgos, estructuración de coberturas, negociación con aseguradoras y administración centralizada. Perfectos para grupos empresariales, holdings y empresas con múltiples sedes.",
+      features: ["Auditoría y mapa de riesgos", "Estructura de coberturas personalizadas", "Negociación directa con aseguradoras", "Administración centralizada de pólizas", "Reportes de siniestralidad", "Renovaciones y ajustes anuales"],
+    },
+    "empresas-transporte": {
+      branch: "Empresas",
+      title: "Seguro de Transporte",
+      desc: "Protege tus mercancías en tránsito por tierra, mar o aire, tanto en el mercado local como en operaciones de comercio exterior. Cubrimos carga general, productos perecederos, valores y equipos frágiles desde el punto de origen hasta el destino final.",
+      features: ["Carga terrestre nacional e internacional", "Transporte marítimo y aéreo", "Todo riesgo o cobertura básica", "Refrigerados y productos perecederos", "Mercancías peligrosas (con restricciones)", "Seguro de responsabilidad del transportista"],
+    },
+    "empresas-rc": {
+      branch: "Empresas",
+      title: "Responsabilidad Civil",
+      desc: "Protege a tu empresa ante reclamaciones de terceros por daños corporales o materiales causados en el ejercicio de tu actividad. Incluye RC de explotación, RC patronal, RC de productos y RC profesional, según el tipo de negocio y sector.",
+      features: ["RC de explotación general", "RC patronal (accidentes a empleados)", "RC de productos y trabajos", "RC profesional (errores y omisiones)", "Defensa jurídica incluida", "Cobertura de daños punitivos (opcional)"],
+    },
+    "empresas-accidentes": {
+      branch: "Empresas",
+      title: "Accidentes Personales",
+      desc: "Garantiza una indemnización a tus empleados o socios ante accidentes que provoquen fallecimiento, invalidez permanente o incapacidad temporal. Complementa al IESS y puede configurarse como beneficio corporativo o como plan colectivo obligatorio.",
+      features: ["Muerte accidental", "Invalidez permanente total y parcial", "Incapacidad temporal (subsidio diario)", "Gastos médicos por accidente", "Cobertura 24/7, dentro y fuera del trabajo", "Extensión a deportes y actividades de riesgo"],
+    },
+    "empresas-casco": {
+      branch: "Empresas",
+      title: "Casco Aéreo / Marítimo",
+      desc: "Cobertura especializada para aeronaves, embarcaciones, yates y buques. Protegemos el casco (estructura), maquinaria, equipo de a bordo y responsabilidad civil frente a terceros, con alcance mundial y condiciones de mercado de Lloyd's of London y compañías especializadas.",
+      features: ["Daños al casco y maquinaria", "Todo riesgo o condiciones de mercado", "Responsabilidad civil hacia terceros", "Cobertura de combustible y lubricantes", "Remoción de restos", "P&I (Protección e Indemnización) embarcaciones"],
+    },
+    "empresas-medica": {
+      branch: "Empresas",
+      title: "Asistencia Médica Empresarial",
+      desc: "Plan colectivo de salud para tus empleados: hospitalización, cirugías, consultas ambulatorias, odontología y medicamentos. Mejora el bienestar de tu equipo, reduce el ausentismo y es un poderoso incentivo de retención de talento.",
+      features: ["Hospitalización y cirugías mayores", "Consultas ambulatorias ilimitadas", "Maternidad y neonatal", "Odontología preventiva y restauradora", "Medicamentos con receta", "Red médica nacional y atención de emergencias"],
+    },
+
+    /* ── FIANZAS ── */
+    "fianzas-bua": {
+      branch: "Fianzas",
+      title: "Fianza BUA — Buen Uso del Anticipo",
+      desc: "Garantiza al beneficiario que los anticipos entregados al contratista serán empleados exclusivamente en la ejecución del contrato. Es exigida en contratos públicos y privados cuando se otorgan pagos anticipados, y se libera conforme avanza la obra.",
+      features: ["Garantía del monto anticipado", "Amortización proporcional al avance", "Aplicable a contratos públicos (SERCOP)", "Liberación automática o parcial", "Endosable al beneficiario", "Plazos flexibles según contrato"],
+    },
+    "fianzas-cc": {
+      branch: "Fianzas",
+      title: "Fianza CC — Cumplimiento de Contrato",
+      desc: "Asegura al contratante que el contratista cumplirá todas las obligaciones pactadas en el contrato (plazo, calidad y especificaciones técnicas). Es la fianza más solicitada en contratación pública y es obligatoria en contratos con el Estado ecuatoriano.",
+      features: ["Cobertura del 5% al 10% del valor contractual", "Obligatoria en contratación pública", "Aplicable a obras, bienes y servicios", "Ejecución inmediata ante incumplimiento", "Renovable por prórroga del contrato", "Liberación al acta de recepción definitiva"],
+    },
+    "fianzas-eobcm": {
+      branch: "Fianzas",
+      title: "Fianza EOBCM — Estabilidad de Obra, Buen Funcionamiento y Calidad de los Materiales",
+      desc: "Cubre el período post-entrega de la obra, garantizando su estabilidad estructural, el buen funcionamiento de instalaciones y la calidad de los materiales empleados. Es la garantía de postventa en construcción y obras de ingeniería.",
+      features: ["Período de garantía post-recepción", "Estabilidad estructural de la obra", "Buen funcionamiento de equipos e instalaciones", "Calidad de materiales utilizados", "Obligatoria en contratos SERCOP", "Vigencia de 5 años en obras públicas"],
+    },
+    "fianzas-so": {
+      branch: "Fianzas",
+      title: "Fianza SO — Seriedad de la Oferta",
+      desc: "Garantiza que el oferente mantendrá su oferta durante el proceso de licitación y, en caso de ser adjudicado, firmará el contrato en los términos presentados. Protege al contratante de postores que retiren su oferta o no suscriban el contrato.",
+      features: ["Aplicable a licitaciones públicas y privadas", "Cobertura del 1% al 3% de la oferta", "Vigencia hasta la firma del contrato", "Ejecución si el oferente se retira", "Liberación automática a no adjudicados", "Proceso ágil para procesos de compra"],
+    },
+    "fianzas-pgb": {
+      branch: "Fianzas",
+      title: "Fianza PGB — Pago a la Garantía de Bienes",
+      desc: "Garantiza el pago de los bienes adquiridos bajo modalidades de crédito, consignación o entrega a plazos. Protege al proveedor ante el incumplimiento de pago del comprador y facilita operaciones comerciales sin transferencia inmediata de dinero.",
+      features: ["Garantía de pago al proveedor", "Aplicable a compras a crédito y consignación", "Cubre el valor total o parcial del bien", "Plazo coincidente con el crédito comercial", "Endosable y transferible", "Liberación al comprobante de pago"],
+    },
+    "fianzas-fl": {
+      branch: "Fianzas",
+      title: "Fianza FL — Fiel Labor",
+      desc: "Protege al empleador ante actos deshonestos, fraudes o malversaciones cometidos por empleados en el ejercicio de sus funciones. Cubre pérdidas económicas directas causadas por conducta deshonesta de trabajadores de confianza.",
+      features: ["Cobertura de malversación y fraude", "Protege activos, dinero y valores", "Aplicable a empleados de confianza", "Descubrimiento hasta 2 años post-siniestro", "Cobertura individual o colectiva", "Investigación forense incluida (con algunas aseguradoras)"],
+    },
+    "fianzas-ga": {
+      branch: "Fianzas",
+      title: "Fianza GA — Garantía Aduanera",
+      desc: "Garantiza el pago de tributos, aranceles y obligaciones aduaneras ante el Servicio Nacional de Aduana del Ecuador (SENAE). Es exigida para importadores, agentes de aduana y operadores de comercio exterior como requisito para operar.",
+      features: ["Garantía ante el SENAE", "Cobertura de tributos y aranceles", "Depósitos aduaneros y almaceneras", "Tránsito aduanero internacional", "Régimen de admisión temporal", "Renovación anual conforme a operaciones"],
+    },
+    "fianzas-gj": {
+      branch: "Fianzas",
+      title: "Fianza GJ — Garantía Judicial",
+      desc: "Reemplaza el depósito en efectivo o la retención de bienes exigidos en procesos judiciales o administrativos. Permite que el afianzado mantenga la liquidez de sus recursos mientras se resuelve el litigio, presentando la fianza como garantía ante el juzgado.",
+      features: ["Sustitución de depósito judicial en efectivo", "Aplicable en procesos civiles, laborales y contencioso-administrativos", "Liberación de medidas cautelares", "Agilidad frente al embargo de bienes", "Renovable mientras dure el proceso", "Aceptada en todas las instancias judiciales del Ecuador"],
+    },
+    "fianzas-gar": {
+      branch: "Fianzas",
+      title: "Fianza GAR — Garantía de Arrendamiento",
+      desc: "Sustituye el depósito en efectivo exigido en contratos de arrendamiento comercial o residencial. Protege al arrendador ante incumplimiento de pago de cánones o daños al inmueble, mientras el arrendatario conserva su liquidez.",
+      features: ["Reemplaza depósito en efectivo", "Cobertura de cánones impagos", "Daños al inmueble arrendado", "Costos legales de desahucio", "Aplicable a locales comerciales y vivienda", "Plazos coincidentes con el contrato de arriendo"],
+    },
+  },
 
   /* ───────── SERVICES ───────── */
   services: [

@@ -94,21 +94,61 @@ export const Views = {
 
       <div class="container hero__inner hero__inner--full">
         <div class="hero__content reveal">
-          <!-- SPIDER RADIAL MENU replacing the two buttons -->
+
+          <!-- ═══ MENÚ ARAÑA — solo desktop/tablet (≥768px) ═══ -->
           <div class="spider-menu-wrap" aria-label="Menú de servicios radial">
             <div class="spider-scene" id="spiderScene">
               <div class="spider-orbit-ring spider-orbit-ring--1"></div>
               <div class="spider-orbit-ring spider-orbit-ring--2"></div>
               <svg class="spider-svg" id="spiderSvg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
-              <!-- CENTER BUTTON -->
-            <button class="spider-center" id="spiderCenter" aria-label="Abrir menú de servicios" aria-expanded="false">
-  <img class="spider-center__img" src="assets/sello-smartbroker.png" alt="SmartBroker" />
-  <span class="spider-center__pulse"></span>
-</button>
+              <button class="spider-center" id="spiderCenter" aria-label="Abrir menú de servicios" aria-expanded="false">
+                <img class="spider-center__img" src="assets/sello-smartbroker.png" alt="SmartBroker" />
+                <span class="spider-center__pulse"></span>
+              </button>
               <div class="spider-nodes" id="spiderNodes"></div>
             </div>
             <p class="spider-hint" id="spiderHint">Pasa el cursor o haz clic para explorar nuestros servicios</p>
           </div>
+
+          <!-- ═══ MENÚ CENTRAL — solo smartphone (<768px) ═══ -->
+          <nav class="cmenu" aria-label="Menú de servicios">
+            <p class="cmenu__eyebrow">Explora nuestros servicios</p>
+            <div class="cmenu__branches" id="cmenuBranches">
+
+              <button class="cmenu__branch" id="cmb-personas" data-branch="personas" aria-expanded="false">
+                <span class="cmenu__branch-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                </span>
+                <span class="cmenu__branch-label">Personas</span>
+                <svg class="cmenu__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <button class="cmenu__branch" id="cmb-empresas" data-branch="empresas" aria-expanded="false">
+                <span class="cmenu__branch-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 014 0v2M3 11h18"/></svg>
+                </span>
+                <span class="cmenu__branch-label">Empresas</span>
+                <svg class="cmenu__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <button class="cmenu__branch" id="cmb-fianzas" data-branch="fianzas" aria-expanded="false">
+                <span class="cmenu__branch-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M9 12h6M9 16h4M5 3h14a2 2 0 012 2v16l-3-2-2 2-2-2-2 2-2-2-3 2V5a2 2 0 012-2z"/></svg>
+                </span>
+                <span class="cmenu__branch-label">Fianzas</span>
+                <svg class="cmenu__chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+
+            <!-- Panel desplegable de submenú -->
+            <div class="cmenu__panel" id="cmenuPanel" aria-hidden="true">
+              <div class="cmenu__panel-header" id="cmenuPanelHeader"></div>
+              <div class="cmenu__panel-items" id="cmenuPanelItems"></div>
+            </div>
+
+            <p class="cmenu__hint" id="cmenuHint">Toca una categoría para explorar</p>
+          </nav>
+
         </div>
       </div>
 
@@ -585,6 +625,112 @@ export const Views = {
               Aceptar
             </button>
           </div>
+        </div>
+      </div>
+    </div>`;
+  },
+
+
+  renderServiceModal() {
+    return `
+    <!-- ═══ MODAL DE SERVICIO ═══ -->
+    <div class="modal-backdrop svc-backdrop" id="modal-service" role="dialog" aria-modal="true"
+         aria-labelledby="svc-modal-title" hidden>
+      <div class="modal svc-modal">
+
+        <!-- Header -->
+        <div class="modal__header svc-modal__header">
+          <div class="modal__header-left">
+            <div class="svc-modal__icon" id="svcModalIcon" aria-hidden="true"></div>
+            <div>
+              <div class="modal__title" id="svc-modal-title">Servicio</div>
+              <div class="modal__subtitle" id="svcModalBranch">SmartBroker</div>
+            </div>
+          </div>
+          <button class="modal__close" id="svc-modal-close" aria-label="Cerrar">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal__body svc-modal__body">
+
+          <!-- Descripción -->
+          <div class="svc-desc" id="svcModalDesc"></div>
+
+          <!-- WhatsApp CTA -->
+          <a class="svc-wa-btn" id="svcWaBtn" href="#" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="20" height="20">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.534 5.86L.057 23.926a.5.5 0 00.61.61l6.083-1.476A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.697-.5-5.25-1.375l-.373-.219-3.87.939.957-3.781-.242-.389A9.954 9.954 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+            </svg>
+            Contactar por WhatsApp
+          </a>
+
+          <!-- Divisor -->
+          <div class="svc-divider">
+            <span>o completa el formulario</span>
+          </div>
+
+          <!-- Formulario -->
+          <form class="svc-form" id="svcForm" novalidate>
+            <input type="hidden" name="_subject" value="Solicitud de información — SmartBroker" />
+            <input type="hidden" name="servicio" id="svcFormServicio" value="" />
+            <input type="hidden" name="_to" value="yordonez@smartbroker.com.ec" />
+
+            <div class="svc-form__row">
+              <div class="svc-form__group">
+                <label class="svc-form__label" for="svcNombre">Nombre completo <span aria-hidden="true">*</span></label>
+                <input class="svc-form__input" type="text" id="svcNombre" name="nombre"
+                       placeholder="Tu nombre" required autocomplete="name" />
+                <span class="svc-form__err" id="svcErrNombre" role="alert"></span>
+              </div>
+              <div class="svc-form__group">
+                <label class="svc-form__label" for="svcEmail">Correo electrónico <span aria-hidden="true">*</span></label>
+                <input class="svc-form__input" type="email" id="svcEmail" name="email"
+                       placeholder="tu@correo.com" required autocomplete="email" />
+                <span class="svc-form__err" id="svcErrEmail" role="alert"></span>
+              </div>
+            </div>
+
+            <div class="svc-form__group">
+              <label class="svc-form__label" for="svcTel">Teléfono / WhatsApp</label>
+              <input class="svc-form__input" type="tel" id="svcTel" name="telefono"
+                     placeholder="+593 99 999 9999" autocomplete="tel" />
+            </div>
+
+            <div class="svc-form__group">
+              <label class="svc-form__label" for="svcMsg">Mensaje o consulta <span aria-hidden="true">*</span></label>
+              <textarea class="svc-form__input svc-form__textarea" id="svcMsg" name="mensaje"
+                        rows="3" placeholder="¿Qué información necesitas?" required></textarea>
+              <span class="svc-form__err" id="svcErrMsg" role="alert"></span>
+            </div>
+
+            <!-- Checkbox datos -->
+            <label class="svc-form__check">
+              <input type="checkbox" id="svcDataConsent" name="consentimiento" required />
+              <span>Acepto la <a href="#" class="modal-trigger" data-modal="data-policy">Política de Protección de Datos</a></span>
+            </label>
+            <span class="svc-form__err" id="svcErrConsent" role="alert"></span>
+
+            <button class="svc-form__submit" id="svcFormSubmit" type="submit">
+              <span id="svcBtnText">Enviar solicitud</span>
+              <span id="svcBtnLoad" hidden aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" style="animation:spin .8s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                Enviando…
+              </span>
+            </button>
+          </form>
+
+          <!-- Éxito -->
+          <div class="svc-success" id="svcSuccess" hidden>
+            <div class="svc-success__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="svc-success__title">¡Solicitud enviada!</p>
+            <p class="svc-success__sub">Nos contactaremos contigo a la brevedad. También puedes escribirnos directamente por WhatsApp.</p>
+          </div>
+
         </div>
       </div>
     </div>`;
