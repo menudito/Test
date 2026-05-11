@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="72" viewBox="0 0 120 72">
-  <rect width="120" height="72" rx="8" fill="#f8f8f8" stroke="#e0e0e0" stroke-width="1"/>
-  <rect x="8" y="8" width="104" height="4" rx="2" fill="#003b6d" opacity="0.3"/>
-  <text x="60" y="48" font-size="13" font-weight="700" fill="#003b6d" font-family="Arial,sans-serif" text-anchor="middle">RenaissanceRe</text>
-  <rect x="8" y="60" width="104" height="4" rx="2" fill="#003b6d" opacity="0.3"/>
-</svg>
