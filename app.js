@@ -35,6 +35,7 @@ const App = {
       Views.renderFooter(brand, sitemap, contact),
       Views.renderDataModal(),
       Views.renderServiceModal(),
+      Views.renderServiceModal(),
     ].join("");
 
     // ── Arrancar controladores ──

@@ -382,7 +382,7 @@ export const Controllers = {
               </div>
               <div class="cmenu__panel-items" style="grid-template-columns: repeat(${branch.cols}, 1fr);">
                 ${branch.children.map(child => `
-                  <a class="cmenu__item" href="#" data-service-id="${child.serviceId || ''}">
+                  <a class="cmenu__item" href="#" data-svc="${child.serviceId || ''}" aria-haspopup="dialog">
                     ${child.icon}
                     <span class="cmenu__item-label">${child.label}</span>
                     ${arrowSvg}
@@ -392,14 +392,6 @@ export const Controllers = {
           panelHdr.nextElementSibling && (panelHdr.nextElementSibling.innerHTML = "");
 
           panel.innerHTML = panelHdr.innerHTML;
-
-          /* Wire click on each cmenu item → service modal */
-          panel.querySelectorAll(".cmenu__item[data-service-id]").forEach(el => {
-            el.addEventListener("click", (e) => {
-              e.preventDefault();
-              const sid = el.getAttribute("data-service-id");
-              if (sid) window.SmartBroker.openServiceModal(sid);
-            });
           });
 
           panel.classList.add("is-open");
@@ -484,14 +476,14 @@ export const Controllers = {
         childEl.id        = `sc-${svc.id}-${j}`;
         childEl.href      = "#";
         childEl.setAttribute("aria-label", child.label.replace("\n", " "));
-        childEl.setAttribute("data-service-id", child.serviceId || "");
+        childEl.setAttribute("data-svc", child.serviceId || "");
+        childEl.setAttribute("aria-haspopup", "dialog");
         childEl.style.left = (cp.x - 25) + "px";
         childEl.style.top  = (cp.y - 25) + "px";
         childEl.innerHTML  = `<span class="sc-icon">${child.icon}</span><span class="sc-label">${child.label.replace("\n", "<br>")}</span>`;
         childEl.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (child.serviceId) window.SmartBroker.openServiceModal(child.serviceId);
+          e.preventDefault(); e.stopPropagation();
+          if (child.serviceId && window._sbOpenService) window._sbOpenService(child.serviceId);
         });
         nodesWrap.appendChild(childEl);
       });
@@ -595,195 +587,95 @@ export const Controllers = {
     });
   },
 
-  /* ═══════════════════════════════════════
-     MODAL DE SERVICIO — pop-up con info,
-     WhatsApp y formulario de solicitud
-  ═══════════════════════════════════════ */
+  /* ─── MODAL DE SERVICIO ─── */
   initServiceModal() {
     const backdrop  = document.getElementById("modal-service");
     if (!backdrop) return;
 
-    const details     = AppModel.serviceDetails || {};
-    const waNumber    = AppModel.whatsapp || "593998661249";
-    const recipientEmail = "yordonez@smartbroker.com.ec";
+    const info    = AppModel.serviceInfo  || {};
+    const waNum   = AppModel.waNumber     || "593998661249";
 
-    /* ── refs al DOM del modal ── */
-    const title    = document.getElementById("svc-modal-title");
-    const branch   = document.getElementById("svcModalBranch");
-    const icon     = document.getElementById("svcModalIcon");
-    const desc     = document.getElementById("svcModalDesc");
-    const waBtn    = document.getElementById("svcWaBtn");
-    const form     = document.getElementById("svcForm");
-    const submitBtn= document.getElementById("svcFormSubmit");
-    const btnText  = document.getElementById("svcBtnText");
-    const btnLoad  = document.getElementById("svcBtnLoad");
-    const success  = document.getElementById("svcSuccess");
-    const svcInput = document.getElementById("svcFormServicio");
+    const titleEl   = document.getElementById("svc-modal-title");
+    const subEl     = document.getElementById("svc-modal-sub");
+    const descEl    = document.getElementById("svcDesc");
+    const featEl    = document.getElementById("svcFeatures");
+    const waBtn     = document.getElementById("svcWaBtn");
+    const closeTop  = document.getElementById("svc-modal-close");
+    const closeBot  = document.getElementById("svc-modal-close-bottom");
+    const contactBtn= document.getElementById("svcContactBtn");
 
-    /* ── open / close helpers ── */
     const openModal = (serviceId) => {
-      const svc = details[serviceId];
+      const svc = info[serviceId];
       if (!svc) return;
 
-      /* populate content */
-      title.textContent  = svc.title;
-      branch.textContent = svc.branch + " · SmartBroker";
-      desc.innerHTML = `
-        <p style="color:rgba(255,255,255,.80);font-size:.92rem;line-height:1.7;margin-bottom:.75rem">${svc.desc}</p>
-        ${svc.features && svc.features.length ? `
-        <ul style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;margin:0;padding:0;list-style:none;">
-          ${svc.features.map(f => `
-            <li style="display:flex;align-items:flex-start;gap:7px;font-size:.82rem;color:rgba(255,255,255,.70)">
-              <svg viewBox="0 0 16 16" fill="none" width="14" height="14" style="flex-shrink:0;margin-top:2px;color:#E8571A">
-                <path d="M3 8l3.5 3.5 6.5-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>${f}
-            </li>`).join("")}
-        </ul>` : ""}`;
+      /* Populate */
+      titleEl.textContent = svc.title;
+      subEl.textContent   = "Categoría: " + (svc.title.split("—")[0].trim());
 
-      /* WhatsApp URL */
-      const waMsg = encodeURIComponent(`Hola SmartBroker, me interesa información sobre: ${svc.title}`);
-      waBtn.href = `https://wa.me/${waNumber}?text=${waMsg}`;
+      descEl.innerHTML = `<p class="modal-section-title">Descripción</p><p>${svc.desc}</p>`;
 
-      /* form state reset */
-      if (svcInput) svcInput.value = svc.title;
-      if (form)    { form.reset(); form.removeAttribute("hidden"); }
-      if (success) success.setAttribute("hidden", "");
-      if (submitBtn) submitBtn.disabled = false;
-      if (btnText)   btnText.hidden = false;
-      if (btnLoad)   btnLoad.hidden = true;
-      document.querySelectorAll(".svc-form__input").forEach(el => el.classList.remove("is-invalid"));
-      document.querySelectorAll(".svc-form__err").forEach(el => el.textContent = "");
+      if (svc.features && svc.features.length) {
+        featEl.innerHTML = `
+          <p class="modal-section-title">Coberturas principales</p>
+          <ul>${svc.features.map(f => `<li>${f}</li>`).join("")}</ul>`;
+      } else {
+        featEl.innerHTML = "";
+      }
 
-      /* show modal */
+      const waMsg = encodeURIComponent("Hola SmartBroker, me interesa información sobre: " + svc.title);
+      waBtn.href = "https://wa.me/" + waNum + "?text=" + waMsg;
+
+      /* Contact btn closes modal and scrolls to contact */
+      contactBtn.onclick = (e) => { e.preventDefault(); closeModal(); location.href = "#contacto"; };
+
+      /* Show */
       backdrop.removeAttribute("hidden");
       requestAnimationFrame(() => backdrop.classList.add("is-open"));
       document.body.style.overflow = "hidden";
-      document.getElementById("svc-modal-close")?.focus();
+      closeTop.focus();
     };
 
     const closeModal = () => {
       backdrop.classList.remove("is-open");
-      setTimeout(() => backdrop.setAttribute("hidden", ""), 300);
+      setTimeout(() => backdrop.setAttribute("hidden", ""), 320);
       document.body.style.overflow = "";
     };
 
-    /* expose globally so spider + cmenu can call it */
-    window.SmartBroker = window.SmartBroker || {};
-    window.SmartBroker.openServiceModal = openModal;
-
-    /* close handlers */
-    document.getElementById("svc-modal-close")?.addEventListener("click", closeModal);
+    /* Close handlers */
+    closeTop.addEventListener("click", closeModal);
+    closeBot.addEventListener("click", closeModal);
     backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && backdrop.classList.contains("is-open")) closeModal();
     });
 
-    /* ── form submission via EmailJS / fetch ── */
-    if (form) {
-      form.addEventListener("submit", async (e) => {
+    /* Expose globally */
+    window._sbOpenService = openModal;
+
+    /* Wire service cards (section #servicios) */
+    document.querySelectorAll(".service-card__cta[data-svc]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
         e.preventDefault();
-
-        /* basic validation */
-        let valid = true;
-        const nombre  = document.getElementById("svcNombre");
-        const email   = document.getElementById("svcEmail");
-        const msg     = document.getElementById("svcMsg");
-        const consent = document.getElementById("svcDataConsent");
-
-        const setErr = (fieldId, errId, message) => {
-          const f = document.getElementById(fieldId);
-          const er= document.getElementById(errId);
-          if (f)  f.classList.add("is-invalid");
-          if (er) er.textContent = message;
-          valid = false;
-        };
-
-        if (!nombre?.value.trim())   setErr("svcNombre","svcErrNombre","Ingresa tu nombre.");
-        if (!email?.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) setErr("svcEmail","svcErrEmail","Correo no válido.");
-        if (!msg?.value.trim())      setErr("svcMsg","svcErrMsg","Escribe tu consulta.");
-        if (!consent?.checked)       {
-          document.getElementById("svcErrConsent").textContent = "Debes aceptar la política de datos.";
-          valid = false;
-        }
-        if (!valid) return;
-
-        /* show loading */
-        submitBtn.disabled = true;
-        btnText.hidden = true;
-        btnLoad.hidden = false;
-
-        /* build payload */
-        const payload = {
-          servicio:  svcInput?.value || "",
-          nombre:    nombre.value.trim(),
-          email:     email.value.trim(),
-          telefono:  document.getElementById("svcTel")?.value.trim() || "",
-          mensaje:   msg.value.trim(),
-          destinatario: recipientEmail,
-          timestamp: new Date().toLocaleString("es-EC", { timeZone: "America/Guayaquil" }),
-        };
-
-        try {
-          /* ── Send via FormSubmit (no backend needed) ── */
-          const fd = new FormData();
-          fd.append("_subject",  `Solicitud de información: ${payload.servicio} — SmartBroker`);
-          fd.append("_to",       recipientEmail);
-          fd.append("_captcha",  "false");
-          fd.append("_template", "table");
-          fd.append("Servicio",  payload.servicio);
-          fd.append("Nombre",    payload.nombre);
-          fd.append("Email",     payload.email);
-          fd.append("Teléfono",  payload.telefono || "—");
-          fd.append("Mensaje",   payload.mensaje);
-          fd.append("Fecha",     payload.timestamp);
-
-          const res = await fetch(`https://formsubmit.co/${recipientEmail}`, {
-            method: "POST",
-            body: fd,
-          });
-
-          if (res.ok || res.type === "opaque") {
-            /* store locally */
-            try {
-              const log = JSON.parse(localStorage.getItem("sb_leads") || "[]");
-              log.push(payload);
-              localStorage.setItem("sb_leads", JSON.stringify(log));
-            } catch (_) {}
-
-            /* show success */
-            form.setAttribute("hidden", "");
-            success.removeAttribute("hidden");
-          } else {
-            throw new Error("Server responded with " + res.status);
-          }
-        } catch (err) {
-          console.error("Form error:", err);
-          /* graceful degradation — still show success to user, log error */
-          form.setAttribute("hidden", "");
-          success.removeAttribute("hidden");
-          try {
-            const log = JSON.parse(localStorage.getItem("sb_leads") || "[]");
-            log.push({ ...payload, _sendError: err.message });
-            localStorage.setItem("sb_leads", JSON.stringify(log));
-          } catch (_) {}
-        } finally {
-          submitBtn.disabled = false;
-          btnText.hidden = false;
-          btnLoad.hidden = true;
-        }
+        openModal(btn.getAttribute("data-svc"));
       });
-    }
+    });
 
-    /* also wire data-policy links inside svc-modal */
-    backdrop.addEventListener("click", (e) => {
-      const trigger = e.target.closest('[data-modal="data-policy"]');
-      if (trigger) {
+    /* Wire spider child nodes */
+    document.querySelectorAll(".spider-child[data-svc]").forEach(el => {
+      el.addEventListener("click", (e) => {
         e.preventDefault();
-        document.getElementById("modal-data-policy")?.removeAttribute("hidden");
-        requestAnimationFrame(() =>
-          document.getElementById("modal-data-policy")?.classList.add("is-open"));
-      }
+        e.stopPropagation();
+        openModal(el.getAttribute("data-svc"));
+      });
+    });
+
+    /* Wire cmenu items (delegated — panel is rebuilt on each open) */
+    document.addEventListener("click", (e) => {
+      const item = e.target.closest(".cmenu__item[data-svc]");
+      if (item) { e.preventDefault(); openModal(item.getAttribute("data-svc")); }
     });
   },
+
 };
 export default Controllers;
+

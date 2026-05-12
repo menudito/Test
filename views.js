@@ -179,8 +179,8 @@ export const Views = {
               <ul class="service-card__features" role="list">
                 ${s.features.map(f => `<li>${f}</li>`).join("")}
               </ul>
-              <a href="#contacto" class="service-card__cta" aria-label="Cotizar ${s.title}">
-                Cotizar ahora
+              <a href="#" class="service-card__cta" data-svc="${s.id}" aria-label="Ver detalles de ${s.title}" aria-haspopup="dialog">
+                Ver detalles
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </article>
@@ -233,15 +233,39 @@ export const Views = {
     </section>`;
   },
 
-  /* ─── TESTIMONIALS ─── */
+  /* ─── ASEGURADORAS ALIADAS ─── */
   renderAseguradoras() {
-    /* 22 logos placeholder — reemplazar src por logos reales cuando estén disponibles */
-    const logos = Array.from({ length: 22 }, (_, i) => ({
-      src: `assets/aseguradoras/aseg_${String(i + 1).padStart(2, "0")}.svg`,
-      alt: `Aseguradora aliada ${i + 1}`,
-    }));
+    /* Logos reales de aseguradoras aliadas */
+    const logos = [
+      { src: "assets/aseguradoras/ASG-4.jpg",  alt: "Aseguradora aliada 1"  },
+      { src: "assets/aseguradoras/ASG-5.jpg",  alt: "Aseguradora aliada 2"  },
+      { src: "assets/aseguradoras/ASG-6.jpg",  alt: "Aseguradora aliada 3"  },
+      { src: "assets/aseguradoras/ASG-7.jpg",  alt: "Aseguradora aliada 4"  },
+      { src: "assets/aseguradoras/ASG-8.jpg",  alt: "Aseguradora aliada 5"  },
+      { src: "assets/aseguradoras/ASG-9.jpg",  alt: "Aseguradora aliada 6"  },
+      { src: "assets/aseguradoras/ASG-10.jpg", alt: "Aseguradora aliada 7"  },
+      { src: "assets/aseguradoras/ASG-11.jpg", alt: "Aseguradora aliada 8"  },
+      { src: "assets/aseguradoras/ASG-12.jpg", alt: "Aseguradora aliada 9"  },
+      { src: "assets/aseguradoras/ASG-13.jpg", alt: "Aseguradora aliada 10" },
+      { src: "assets/aseguradoras/ASG-14.jpg", alt: "Aseguradora aliada 11" },
+      { src: "assets/aseguradoras/ASG-15.jpg", alt: "Aseguradora aliada 12" },
+      { src: "assets/aseguradoras/ASG-16.jpg", alt: "Aseguradora aliada 13" },
+      { src: "assets/aseguradoras/ASG-17.jpg", alt: "Aseguradora aliada 14" },
+      { src: "assets/aseguradoras/ASG-18.jpg", alt: "Aseguradora aliada 15" },
+      { src: "assets/aseguradoras/ASG-19.jpg", alt: "Aseguradora aliada 16" },
+      { src: "assets/aseguradoras/ASG-20.jpg", alt: "Aseguradora aliada 17" },
+      { src: "assets/aseguradoras/ASG-21.jpg", alt: "Aseguradora aliada 18" },
+      { src: "assets/aseguradoras/ASG-22.jpg", alt: "Aseguradora aliada 19" },
+      { src: "assets/aseguradoras/ASG-23.jpg", alt: "Aseguradora aliada 20" },
+      { src: "assets/aseguradoras/ASG-24.jpg", alt: "Aseguradora aliada 21" },
+      { src: "assets/aseguradoras/ASG-25.jpg", alt: "Aseguradora aliada 22" },
+      { src: "assets/aseguradoras/ASG-26.jpg", alt: "Aseguradora aliada 23" },
+      { src: "assets/aseguradoras/ASG-27.jpg", alt: "Aseguradora aliada 24" },
+      { src: "assets/aseguradoras/ASG-28.jpg", alt: "Aseguradora aliada 25" },
+      { src: "assets/aseguradoras/ASG-29.jpg", alt: "Aseguradora aliada 26" },
+    ];
 
-    /* Duplicamos el array para el loop infinito CSS */
+    /* Duplicamos para el loop infinito CSS */
     const allLogos = [...logos, ...logos];
 
     return `
@@ -631,111 +655,72 @@ export const Views = {
   },
 
 
+  /* ─── MODAL: INFORMACIÓN DE SERVICIO ─── */
   renderServiceModal() {
     return `
-    <!-- ═══ MODAL DE SERVICIO ═══ -->
-    <div class="modal-backdrop svc-backdrop" id="modal-service" role="dialog" aria-modal="true"
-         aria-labelledby="svc-modal-title" hidden>
+    <div class="modal-backdrop" id="modal-service" role="dialog" aria-modal="true"
+         aria-labelledby="svc-modal-title" aria-describedby="svc-modal-body" hidden>
       <div class="modal svc-modal">
 
         <!-- Header -->
         <div class="modal__header svc-modal__header">
           <div class="modal__header-left">
-            <div class="svc-modal__icon" id="svcModalIcon" aria-hidden="true"></div>
+            <div class="modal__icon svc-modal__icon" id="svcIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
             <div>
               <div class="modal__title" id="svc-modal-title">Servicio</div>
-              <div class="modal__subtitle" id="svcModalBranch">SmartBroker</div>
+              <div class="modal__subtitle" id="svc-modal-sub">SmartBroker</div>
             </div>
           </div>
           <button class="modal__close" id="svc-modal-close" aria-label="Cerrar">
-            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
         </div>
 
         <!-- Body -->
-        <div class="modal__body svc-modal__body">
+        <div class="modal__body" id="svc-modal-body">
 
           <!-- Descripción -->
-          <div class="svc-desc" id="svcModalDesc"></div>
+          <div id="svcDesc"></div>
+
+          <!-- Features -->
+          <div id="svcFeatures"></div>
+
+          <div class="modal-divider"></div>
 
           <!-- WhatsApp CTA -->
-          <a class="svc-wa-btn" id="svcWaBtn" href="#" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="20" height="20">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <a class="svc-wa-btn" id="svcWaBtn" href="#" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
               <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.534 5.86L.057 23.926a.5.5 0 00.61.61l6.083-1.476A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.697-.5-5.25-1.375l-.373-.219-3.87.939.957-3.781-.242-.389A9.954 9.954 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
             </svg>
-            Contactar por WhatsApp
+            Consultar por WhatsApp
           </a>
 
-          <!-- Divisor -->
-          <div class="svc-divider">
-            <span>o completa el formulario</span>
-          </div>
+          <div class="svc-or"><span>o escríbenos directamente</span></div>
 
-          <!-- Formulario -->
-          <form class="svc-form" id="svcForm" novalidate>
-            <input type="hidden" name="_subject" value="Solicitud de información — SmartBroker" />
-            <input type="hidden" name="servicio" id="svcFormServicio" value="" />
-            <input type="hidden" name="_to" value="yordonez@smartbroker.com.ec" />
-
-            <div class="svc-form__row">
-              <div class="svc-form__group">
-                <label class="svc-form__label" for="svcNombre">Nombre completo <span aria-hidden="true">*</span></label>
-                <input class="svc-form__input" type="text" id="svcNombre" name="nombre"
-                       placeholder="Tu nombre" required autocomplete="name" />
-                <span class="svc-form__err" id="svcErrNombre" role="alert"></span>
-              </div>
-              <div class="svc-form__group">
-                <label class="svc-form__label" for="svcEmail">Correo electrónico <span aria-hidden="true">*</span></label>
-                <input class="svc-form__input" type="email" id="svcEmail" name="email"
-                       placeholder="tu@correo.com" required autocomplete="email" />
-                <span class="svc-form__err" id="svcErrEmail" role="alert"></span>
-              </div>
-            </div>
-
-            <div class="svc-form__group">
-              <label class="svc-form__label" for="svcTel">Teléfono / WhatsApp</label>
-              <input class="svc-form__input" type="tel" id="svcTel" name="telefono"
-                     placeholder="+593 99 999 9999" autocomplete="tel" />
-            </div>
-
-            <div class="svc-form__group">
-              <label class="svc-form__label" for="svcMsg">Mensaje o consulta <span aria-hidden="true">*</span></label>
-              <textarea class="svc-form__input svc-form__textarea" id="svcMsg" name="mensaje"
-                        rows="3" placeholder="¿Qué información necesitas?" required></textarea>
-              <span class="svc-form__err" id="svcErrMsg" role="alert"></span>
-            </div>
-
-            <!-- Checkbox datos -->
-            <label class="svc-form__check">
-              <input type="checkbox" id="svcDataConsent" name="consentimiento" required />
-              <span>Acepto la <a href="#" class="modal-trigger" data-modal="data-policy">Política de Protección de Datos</a></span>
-            </label>
-            <span class="svc-form__err" id="svcErrConsent" role="alert"></span>
-
-            <button class="svc-form__submit" id="svcFormSubmit" type="submit">
-              <span id="svcBtnText">Enviar solicitud</span>
-              <span id="svcBtnLoad" hidden aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" style="animation:spin .8s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-                Enviando…
-              </span>
-            </button>
-          </form>
-
-          <!-- Éxito -->
-          <div class="svc-success" id="svcSuccess" hidden>
-            <div class="svc-success__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <p class="svc-success__title">¡Solicitud enviada!</p>
-            <p class="svc-success__sub">Nos contactaremos contigo a la brevedad. También puedes escribirnos directamente por WhatsApp.</p>
-          </div>
-
+          <!-- Botón contacto -->
+          <a href="#contacto" class="btn btn--primary btn--block" id="svcContactBtn">
+            Solicitar información
+            <svg viewBox="0 0 16 16" fill="none" width="14" height="14" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
+
+        <!-- Footer -->
+        <div class="modal__footer">
+          <p class="modal__footer-note">SmartBroker · Corredora de seguros certificada · RUC 1792783933001</p>
+          <div class="modal__footer-actions">
+            <button class="btn btn--ghost modal-close-btn" id="svc-modal-close-bottom" aria-label="Cerrar">Cerrar</button>
+          </div>
+        </div>
+
       </div>
     </div>`;
   },
 
+
 };
 
 export default Views;
+
